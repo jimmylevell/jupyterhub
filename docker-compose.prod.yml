@@ -12,6 +12,7 @@ services:
       DOCKER_JUPYTER_CONTAINER: ghcr.io/jimmylevell/jupyter/levell_jupyternotebook:latest
       DOCKER_NETWORK_NAME: levell_jupyter
       HUB_IP: 0.0.0.0
+      USER_SECRET: /run/secrets/jupyterhub_user_secret
     secrets:
       - jupyterhub_user_secret
     deploy:
