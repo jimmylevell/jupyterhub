@@ -5,8 +5,8 @@ import shutil
 c = get_config()
 
 # read docker secret file
-docker_secret_file_client_secret = os.environ['CLIENT_SECRET']
-with open(docker_secret_file_client_secret, 'r') as secret_file:
+docker_secret_file_user_secret = os.environ['USER_SECRET']
+with open(docker_secret_file_user_secret, 'r') as secret_file:
     user_secret = secret_file.read()
 
 # Generic configuration
