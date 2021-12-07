@@ -12,6 +12,8 @@ services:
       DOCKER_JUPYTER_CONTAINER: ghcr.io/jimmylevell/jupyter/levell_jupyternotebook:latest
       DOCKER_NETWORK_NAME: levell_jupyter
       HUB_IP: 0.0.0.0
+    secrets:
+      - jupyterhub_user_secret
     deploy:
       replicas: 1
       update_config:
@@ -52,3 +54,7 @@ volumes:
       o: bind
       type: none
       device: /srv/docker/jupyter
+
+secrets:
+  jupyterhub_user_secret:
+    external: true

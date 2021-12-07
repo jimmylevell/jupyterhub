@@ -4,6 +4,11 @@ import shutil
 
 c = get_config()
 
+# read docker secret file
+docker_secret_file_client_secret = os.environ['CLIENT_SECRET']
+with open(docker_secret_file_client_secret, 'r') as secret_file:
+    user_secret = secret_file.read()
+
 # Generic configuration
 c.JupyterHub.admin_access = True
 c.DockerSpawner.remove = True
@@ -34,7 +39,7 @@ c.JupyterHub.hub_bind_url = 'http://0.0.0.0:8081'
 
 from jupyterhub.auth import DummyAuthenticator
 c.JupyterHub.authenticator_class = DummyAuthenticator
-c.DummyAuthenticator.password = "some_password"
+c.DummyAuthenticator.password = user_secret
 
 # user data persistence
 #c.DockerSpawner.extra_create_kwargs = {'user': 'root'}
