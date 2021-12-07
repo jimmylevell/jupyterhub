@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  levell-jupyterhub:
+    image: ghcr.io/jimmylevell/jupyter/levell_jupyterhub:latest
+    networks:
+      - traefik-public
+      - levell_jupyter
+    volumes:
+      - jupyterhub_data:/srv/jupyterhub/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment: 
+      DOCKER_JUPYTER_CONTAINER: ghcr.io/jimmylevell/jupyter/levell_jupyternotebook:latest
+      DOCKER_NETWORK_NAME: levell_jupyter
+      HUB_IP: 0.0.0.0
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      labels:
+        - traefik.enable=true # enable traefik
+        - traefik.docker.network=traefik-public # put it in the same network as traefik
+        - traefik.constraint-label=traefik-public # assign the same label as traefik so it can be discovered
+        - traefik.http.routers.levelljupyter.rule=Host(`jupyter.app.levell.ch`) # listen to port 80 for request to APP_DOMAIN (use together with the line below)
+        - traefik.http.routers.levelljupyter.entrypoints=http
+        - traefik.http.routers.levelljupyter.middlewares=https-redirect
+        - traefik.http.middlewares.levelljupyter.redirectscheme.scheme=https # redirect traffic to https
+        - traefik.http.middlewares.levelljupyter.redirectscheme.permanent=true # redirect traffic to https
+        - traefik.http.routers.levelljupyter-secured.rule=Host(`jupyter.app.levell.ch`) # listen to port 443 for request to APP_DOMAIN (use together with the line below)
+        - traefik.http.routers.levelljupyter-secured.entrypoints=https
+        - traefik.http.routers.levelljupyter-secured.tls.certresolver=le # use the Let's Encrypt certificate we set up earlier
+        - traefik.http.services.levelljupyter-secured.loadbalancer.server.port=8000 # ask Traefik to search for port service container
+        
+        # redundancy required configuration - allowing load balancer to handle multiple replicas
+        - traefik.http.services.levelljupyter-secured.loadbalancer.sticky=true        
+        - traefik.http.services.levelljupyter-secured.loadbalancer.healthcheck.path=/
+        - traefik.http.services.levelljupyter-secured.loadbalancer.healthcheck.interval=10s
+        - traefik.http.services.levelljupyter-secured.loadbalancer.healthcheck.timeout=10s
+
+networks:
+  traefik-public:
+    external: true
+  levell_jupyter:
+    external: true
+    
+volumes: 
+  jupyterhub_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /srv/docker/jupyter
