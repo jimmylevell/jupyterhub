@@ -32,6 +32,8 @@ c.DockerSpawner.image_whitelist = {
 c.JupyterHub.hub_ip = '0.0.0.0'
 c.JupyterHub.hub_bind_url = 'http://0.0.0.0:8081'
 
+from jupyterhub.auth import DummyAuthenticator
+c.JupyterHub.authenticator_class = DummyAuthenticator
 c.DummyAuthenticator.password = "some_password"
 
 # user data persistence
