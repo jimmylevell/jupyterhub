@@ -1,7 +1,7 @@
 ###############################################################################################
 # levell jupyter hub - BASE
 ###############################################################################################
-FROM jupyterhub/jupyterhub:latest as levell-jupyterhub-base
+FROM jupyterhub/jupyterhub:3.1 as levell-jupyterhub-base
 
 RUN mkdir -p /srv/jupyterhub
 WORKDIR /srv/jupyterhub
@@ -27,7 +27,7 @@ RUN pip install \
 ###############################################################################################
 # levell jupyter - BASE
 ###############################################################################################
-FROM jupyter/scipy-notebook as levell-jupyternotebook-base
+FROM jupyter/scipy-notebook:2022-12-11 as levell-jupyternotebook-base
 
 WORKDIR /var/www
 
