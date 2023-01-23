@@ -27,7 +27,7 @@ RUN pip install \
 ###############################################################################################
 # levell jupyter - BASE
 ###############################################################################################
-FROM jupyter/scipy-notebook:2023-01-16 as levell-jupyternotebook-base
+FROM jupyter/scipy-notebook:2023-01-23 as levell-jupyternotebook-base
 
 WORKDIR /var/www
 
