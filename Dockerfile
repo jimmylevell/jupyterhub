@@ -48,6 +48,6 @@ FROM levell-jupyternotebook-base as levell-jupyternotebook-deploy
 
 # install pip applications
 RUN pip install --upgrade pip
-RUN pip install sklearn
+RUN pip install scikit-learn
 RUN pip install pandas
 RUN pip install seaborn
