@@ -1,7 +1,7 @@
 ###############################################################################################
 # levell jupyter hub - BASE
 ###############################################################################################
-FROM jupyterhub/jupyterhub:5.0.0 as levell-jupyterhub-base
+FROM jupyterhub/jupyterhub:5.1.0 as levell-jupyterhub-base
 
 RUN mkdir -p /srv/jupyterhub
 WORKDIR /srv/jupyterhub
